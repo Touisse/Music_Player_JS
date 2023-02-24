@@ -1,0 +1,9 @@
+.home{
+    flex: 4;
+	font-family: 'Carter One', cursive;
+}
+
+.homeWidgets{
+    display: flex;
+    margin: 20px;
+}
