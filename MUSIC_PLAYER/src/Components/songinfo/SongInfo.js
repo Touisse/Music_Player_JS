@@ -2,6 +2,7 @@ import React from "react";
 import "./SongInfo.css";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
+import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 
 const SongInfo = ({ currentSong }) => {
   return (
@@ -13,7 +14,10 @@ const SongInfo = ({ currentSong }) => {
       </div>
       <div className="song-info">
         <img src={currentSong.img} alt={currentSong.title} />
-        <h3>{currentSong.title}</h3>
+        <div className="heart">
+          <h3>{currentSong.title}</h3>
+          <FavoriteBorderIcon />
+        </div>
         <h4>{currentSong.artist}</h4>
       </div>
     </>

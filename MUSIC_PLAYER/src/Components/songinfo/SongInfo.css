@@ -9,6 +9,10 @@
 	border-radius: 50%;
 	max-width: 250px;
 	margin-bottom: 2rem;
+	-webkit-border-radius: 50%;
+	-moz-border-radius: 50%;
+	-ms-border-radius: 50%;
+	-o-border-radius: 50%;
 }
 
 .song-info h3 {
@@ -41,4 +45,11 @@
 }
  .icon:hover {
 	color: rgb(53, 53, 53);
+ }
+
+ .heart{
+	width: 350px;
+	display: flex;
+	justify-content:space-between;
+	align-items: center;
  }
