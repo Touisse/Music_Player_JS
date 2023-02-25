@@ -3,6 +3,7 @@ import "./SongInfo.css";
 import KeyboardArrowDownIcon from "@mui/icons-material/KeyboardArrowDown";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
+import FavoriteIcon from '@mui/icons-material/Favorite';
 
 const SongInfo = ({ currentSong }) => {
   return (
@@ -16,7 +17,13 @@ const SongInfo = ({ currentSong }) => {
         <img src={currentSong.img} alt={currentSong.title} />
         <div className="heart">
           <h3>{currentSong.title}</h3>
-          <FavoriteBorderIcon />
+          <FavoriteBorderIcon
+            sx={{
+              fontSize: "30px",
+              color: "black",
+              "&:hover": { color: "black" },
+            }}
+          />
         </div>
         <h4>{currentSong.artist}</h4>
       </div>

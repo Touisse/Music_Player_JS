@@ -3,7 +3,27 @@ import PlayArrowIcon from "@mui/icons-material/PlayArrow";
 import FastForwardIcon from "@mui/icons-material/FastForward";
 import FastRewindIcon from "@mui/icons-material/FastRewind";
 import PauseIcon from "@mui/icons-material/Pause";
+import VolumeDownIcon from "@mui/icons-material/VolumeDown";
+import VolumeUpIcon from "@mui/icons-material/VolumeUp";
+import VolumeOffIcon from "@mui/icons-material/VolumeOff";
+import VolumeMuteIcon from "@mui/icons-material/VolumeMute";
 import "./Controls.css";
+import { styled, Slider } from "@mui/material";
+import { color } from "@mui/system";
+
+const PSlider = styled(Slider)(({ theme, ...props }) => ({
+  color: "white",
+  height: 2,
+  "&:hover": {
+    cursor: "auto",
+  },
+  "& .MuiSlider-thumb": {
+    width: "13px",
+    height: "13px",
+    display: props.thumbless ? "none" : "block",
+    color: "black",
+  },
+}));
 
 const Controls = ({ currentSongIndex, setCurrentSongIndex, songs }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -11,7 +31,66 @@ const Controls = ({ currentSongIndex, setCurrentSongIndex, songs }) => {
   const [musicTotalLength, setMusicTotalLength] = useState("04 : 38");
   const [musicCurrentTime, setMusicCurrentTime] = useState("00 : 00");
   const audioEl = useRef(null);
+  const [volume, setVolume] = useState(30);
+  const [mute, setMute] = useState(false);
+  const [elapsed, setElapsed] = useState(0);
+  const [duration, setDuration] = useState(0);
 
+  useEffect(() => {
+    if (audioEl) {
+      audioEl.current.volume = volume / 100;
+    }
+
+    if (isPlaying) {
+      setInterval(() => {
+        const _duration = Math.floor(audioEl?.current?.duration);
+        const _elapsed = Math.floor(audioEl?.current?.currentTime);
+
+        setDuration(_duration);
+        setElapsed(_elapsed);
+      }, 100);
+    }
+  }, [volume, isPlaying]);
+  // Volume btn
+  function VolumeBtns() {
+    return mute ? (
+      <VolumeOffIcon
+        sx={{
+          color: "black",
+          fontSize: "30px ",
+          "&:hover": { color: "white" },
+        }}
+        onClick={() => setMute(!mute)}
+      />
+    ) : volume <= 20 ? (
+      <VolumeMuteIcon
+        sx={{
+          color: "black",
+          fontSize: "30px ",
+          "&:hover": { color: "white" },
+        }}
+        onClick={() => setMute(!mute)}
+      />
+    ) : volume <= 75 ? (
+      <VolumeDownIcon
+        sx={{
+          color: "black",
+          fontSize: "30px ",
+          "&:hover": { color: "white" },
+        }}
+        onClick={() => setMute(!mute)}
+      />
+    ) : (
+      <VolumeUpIcon
+        sx={{
+          color: "black",
+          fontSize: "30px ",
+          "&:hover": { color: "white" },
+        }}
+        onClick={() => setMute(!mute)}
+      />
+    );
+  }
   const handleAudioUpdate = () => {
     //Input total length of the audio
     let minutes = Math.floor(audioEl.current.duration / 60);
@@ -100,6 +179,15 @@ const Controls = ({ currentSongIndex, setCurrentSongIndex, songs }) => {
           className="icon"
           sx={{ fontSize: "35px" }}
           onClick={playNextSong}
+        />
+      </div>
+      <div className="volume">
+        <VolumeBtns />
+        <PSlider
+          min={0}
+          max={100}
+          value={volume}
+          onChange={(e, v) => setVolume(v)}
         />
       </div>
     </div>
