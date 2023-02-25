@@ -1,0 +1,13 @@
+.controls{
+	margin: 2rem 0rem;
+	display: flex;
+	justify-content: space-around;
+	align-items: center;
+	font-size: 1.5rem;
+}
+.icon{
+	cursor: pointer;
+}
+ .icon:hover {
+	color: rgb(53, 53, 53);
+ }

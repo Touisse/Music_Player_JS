@@ -1,9 +1,13 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
 .home{
     flex: 4;
 	font-family: 'Carter One', cursive;
-}
-
-.homeWidgets{
+    height: 70vh;
     display: flex;
-    margin: 20px;
+    align-items: center;
+    justify-content: center;
 }
