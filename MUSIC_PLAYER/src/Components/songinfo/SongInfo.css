@@ -24,3 +24,21 @@
 	font-style: bold;
 	color: rgb(192, 51, 49);
 }
+
+.top{
+	display: flex;
+	justify-content: space-between;
+}
+.top h2 {
+	font-size: 1rem;
+	font-family: 'Carter One', cursive;
+	margin-bottom: 1rem;
+	color: rgb(80, 82, 84);
+}
+
+.icon{
+	cursor: pointer;
+}
+ .icon:hover {
+	color: rgb(53, 53, 53);
+ }

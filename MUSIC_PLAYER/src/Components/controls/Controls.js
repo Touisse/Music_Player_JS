@@ -7,7 +7,39 @@ import "./Controls.css";
 
 const Controls = ({ currentSongIndex, setCurrentSongIndex, songs }) => {
   const [isPlaying, setIsPlaying] = useState(false);
+  const [audioProgress, setAudioProgress] = useState(0);
+  const [musicTotalLength, setMusicTotalLength] = useState("04 : 38");
+  const [musicCurrentTime, setMusicCurrentTime] = useState("00 : 00");
   const audioEl = useRef(null);
+
+  const handleAudioUpdate = () => {
+    //Input total length of the audio
+    let minutes = Math.floor(audioEl.current.duration / 60);
+    let seconds = Math.floor(audioEl.current.duration % 60);
+    let musicTotalLength0 = `${minutes < 10 ? `0${minutes}` : minutes} : ${
+      seconds < 10 ? `0${seconds}` : seconds
+    }`;
+    setMusicTotalLength(musicTotalLength0);
+
+    //Input Music Current Time
+    let currentMin = Math.floor(audioEl.current.currentTime / 60);
+    let currentSec = Math.floor(audioEl.current.currentTime % 60);
+    let musicCurrentT = `${currentMin < 10 ? `0${currentMin}` : currentMin} : ${
+      currentSec < 10 ? `0${currentSec}` : currentSec
+    }`;
+    setMusicCurrentTime(musicCurrentT);
+
+    const progress = parseInt(
+      (audioEl.current.currentTime / audioEl.current.duration) * 100
+    );
+    setAudioProgress(isNaN(progress) ? 0 : progress);
+  };
+
+  const handleMusicProgressBar = (e) => {
+    setAudioProgress(e.target.value);
+    audioEl.current.currentTime =
+      (e.target.value * audioEl.current.duration) / 100;
+  };
   const handlePlay = () => {
     setIsPlaying((prev) => !prev);
   };
@@ -16,9 +48,10 @@ const Controls = ({ currentSongIndex, setCurrentSongIndex, songs }) => {
     setIsPlaying(true);
   };
   const playPrevSong = () => {
-    setCurrentSongIndex((prev) => prev - 1 < 0 ? 0 : prev  - 1);
+    setCurrentSongIndex((prev) => (prev - 1 < 0 ? 0 : prev - 1));
     setIsPlaying(true);
   };
+
   useEffect(() => {
     if (isPlaying) {
       audioEl.current.play();
@@ -27,32 +60,48 @@ const Controls = ({ currentSongIndex, setCurrentSongIndex, songs }) => {
     }
   }, [isPlaying, currentSongIndex]);
   return (
-    <div className="controls">
-      <audio src={songs[currentSongIndex].src} ref={audioEl} />
-      <FastRewindIcon
-        className="icon"
-        sx={{ fontSize: "35px" }}
-        onClick={playPrevSong}
-      />
-      {!isPlaying ? (
-        <PlayArrowIcon
-          className="icon"
-          sx={{ fontSize: "76px" }}
-          onClick={handlePlay}
+    <div>
+      <div className="progress">
+        <input
+          type="range"
+          name="musicProgressBar"
+          className="musicProgressBar"
+          value={audioProgress}
+          onChange={handleMusicProgressBar}
         />
-      ) : (
-        <PauseIcon
-          className="icon"
-          sx={{ fontSize: "76px" }}
-          onClick={handlePlay}
+      </div>
+      <div className="controls">
+        <audio
+          src={songs[currentSongIndex].src}
+          ref={audioEl}
+          onTimeUpdate={handleAudioUpdate}
         />
-      )}
 
-      <FastForwardIcon
-        className="icon"
-        sx={{ fontSize: "35px" }}
-        onClick={playNextSong}
-      />
+        <FastRewindIcon
+          className="icon"
+          sx={{ fontSize: "35px" }}
+          onClick={playPrevSong}
+        />
+        {!isPlaying ? (
+          <PlayArrowIcon
+            className="icon"
+            sx={{ fontSize: "76px" }}
+            onClick={handlePlay}
+          />
+        ) : (
+          <PauseIcon
+            className="icon"
+            sx={{ fontSize: "76px" }}
+            onClick={handlePlay}
+          />
+        )}
+
+        <FastForwardIcon
+          className="icon"
+          sx={{ fontSize: "35px" }}
+          onClick={playNextSong}
+        />
+      </div>
     </div>
   );
 };
